@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using apptrade.Models;
 
 namespace apptrade.Data;
 
@@ -9,4 +11,6 @@ public class ApplicationDbContext : IdentityDbContext
         : base(options)
     {
     }
+
+     public DbSet<Instrument> DSInstruments { get; set; }
 }
