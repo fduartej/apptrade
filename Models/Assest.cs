@@ -3,8 +3,8 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace apptrade.Models
 {
-    [Table("t_instrumento")]
-    public class Instrument
+    [Table("t_assest")]
+    public class Assest
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]

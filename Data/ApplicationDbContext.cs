@@ -12,5 +12,8 @@ public class ApplicationDbContext : IdentityDbContext
     {
     }
 
-     public DbSet<Instrument> DSInstruments { get; set; }
+    public DbSet<Assest> DbAssest { get; set; }
+     
+    public DbSet<Customer> DbCustomer { get; set; }
 }
+

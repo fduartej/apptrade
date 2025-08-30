@@ -26,7 +26,7 @@ namespace apptrade.Controllers
         public IActionResult Index()
         {
             _logger.LogInformation("Fetching market data...");
-            var instruments = _context.DSInstruments.ToList();
+            var instruments = _context.DbAssest.ToList();
             return View(instruments);
         }
 
@@ -34,7 +34,7 @@ namespace apptrade.Controllers
         {
             _logger.LogInformation($"Fetching details for instrument: {id}");
             
-            var instrument = new Instrument
+            var instrument = new Assest
             {
                 Ticker = id,
                 Nombre = "Instrument Name",
