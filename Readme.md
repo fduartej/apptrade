@@ -30,3 +30,5 @@ dotnet ef database update
 OPCIONAL solo en caso que no tengas el EF
 
 dotnet tool install --global dotnet-ef
+
+dotnet ef migrations add ContactoMigracion --context apptrade.Data.ApplicationDbContext -o "C:\opt\code\USMP2\apptrade\Data\Migrations"

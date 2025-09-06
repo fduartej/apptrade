@@ -13,7 +13,11 @@ public class ApplicationDbContext : IdentityDbContext
     }
 
     public DbSet<Assest> DbAssest { get; set; }
-     
+
     public DbSet<Customer> DbCustomer { get; set; }
+
+    public DbSet<Contact> DbContact { get; set; }
+
+    public DbSet<Watchlist> DbWatchlist { get; set; }
 }
 

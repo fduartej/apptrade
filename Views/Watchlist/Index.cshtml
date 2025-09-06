@@ -1,4 +1,4 @@
-@model IEnumerable<apptrade.Models.Assest>
+@model IEnumerable<apptrade.Models.Watchlist>
 
 <div class="container-fluid">
     <div class="row">
@@ -6,7 +6,7 @@
             <div class="card">
                 <div class="card-header bg-primary text-white">
                     <h2 class="card-title mb-0">
-                        <i class="fas fa-chart-line me-2"></i>Instrumentos Financieros
+                        <i class="fas fa-chart-line me-2"></i>Mi Lista de Seguimiento
                     </h2>
                 </div>
                 <div class="card-body">
@@ -16,7 +16,7 @@
                         </h5>
                         <p class="mb-0">
                             <strong>Total de Instrumentos:</strong> 
-                            <span class="badge bg-success fs-6">@Model.Count()</span>
+                            <span class="badge bg-success fs-6">@Model.Count(w => w.Assest != null)</span>
                         </p>
                     </div>
                     
@@ -46,34 +46,42 @@
                                     <th scope="col">
                                         <i class="fas fa-chart-bar me-1"></i>Capitalización (USD)
                                     </th>
+                                    <th scope="col">
+                                        <i class="fas fa-cogs me-1"></i>Acciones
+                                    </th>
                                 </tr>
                             </thead>
                             <tbody>
                                 @foreach (var instrumento in Model)
                                 {
-                                    <tr>
-                                        <td class="fw-bold text-primary">
-                                            <a asp-controller="Market" asp-action="Details" asp-route-id="@instrumento.Ticker"
-                                                class="btn btn-link"> @instrumento.Ticker</a>
-                                            <a asp-controller="Watchlist" asp-action="Follow" asp-route-id="@instrumento.Ticker"
-                                                class="btn btn-success btn-sm ms-2" title="Seguir @instrumento.Ticker">
-                                                <i class="fas fa-plus me-1"></i>Seguir
-                                            </a>
-                                        </td>
-                                        <td>@instrumento.Nombre</td>
-                                        <td>
-                                            <span class="badge bg-secondary">@instrumento.Sector</span>
-                                        </td>
-                                        <td class="text-center">
-                                            <span class="badge bg-warning text-dark">@instrumento.Moneda</span>
-                                        </td>
-                                        <td class="text-end fw-bold text-success">
-                                            @instrumento.PrecioActual.ToString("C")
-                                        </td>
-                                        <td class="text-end fw-bold">
-                                            @instrumento.CapitalizacionUSD.ToString("N0")
-                                        </td>
-                                    </tr>
+                                    @if (instrumento.Assest != null)
+                                    {
+                                        <tr>
+                                            <td class="fw-bold text-primary">
+                                                <a asp-controller="Market" asp-action="Details" asp-route-id="@instrumento.Assest.Ticker"
+                                                    class="btn btn-link"> @instrumento.Assest.Ticker</a>
+                                            </td>
+                                            <td>@instrumento.Assest.Nombre</td>
+                                            <td>
+                                                <span class="badge bg-secondary">@instrumento.Assest.Sector</span>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="badge bg-warning text-dark">@instrumento.Assest.Moneda</span>
+                                            </td>
+                                            <td class="text-end fw-bold text-success">
+                                                @instrumento.Assest.PrecioActual.ToString("C")
+                                            </td>
+                                            <td class="text-end fw-bold">
+                                                @instrumento.Assest.CapitalizacionUSD.ToString("N0")
+                                            </td>
+                                            <td class="text-center">
+                                                <a asp-controller="Watchlist" asp-action="Unfollow" asp-route-id="@instrumento.Assest.Ticker"
+                                                    class="btn btn-danger btn-sm" title="Dejar de seguir @instrumento.Assest.Ticker">
+                                                    <i class="fas fa-trash me-1"></i>Quitar
+                                                </a>
+                                            </td>
+                                        </tr>
+                                    }
                                 }
                             </tbody>
                         </table>
