@@ -3,24 +3,21 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace apptrade.Models
 {
-    [Table("assets")]
-    public class Asset
+    [Table("portfolios")]
+    public class Portfolio
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long Id { get; set; }
-
-        [Required]
-        public string Symbol { get; set; } = string.Empty;
         
         [Required]
         public string Name { get; set; } = string.Empty;
         
         [Required]
-        public string Market { get; set; } = string.Empty;
+        public string Owner { get; set; } = string.Empty;
         
         [Required]
-        [Column("asset_type")]
-        public string AssetType { get; set; } = string.Empty; // 'stock', 'bitcoin', 'etf', 'fixed bond'
+        [Column("user_id")]
+        public long UserId { get; set; }
     }
 }
