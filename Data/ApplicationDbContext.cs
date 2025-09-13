@@ -19,5 +19,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Contact> DbContact { get; set; }
 
     public DbSet<Watchlist> DbWatchlist { get; set; }
+
+    public DbSet<Wallet> DbWallet { get; set; }
 }
 
