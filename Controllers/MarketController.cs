@@ -8,6 +8,7 @@ using Microsoft.Extensions.Logging;
 
 using apptrade.Data;
 using apptrade.Models;
+using apptrade.Services;
 
 namespace apptrade.Controllers
 {
@@ -15,34 +16,46 @@ namespace apptrade.Controllers
     public class MarketController : Controller
     {
         private readonly ILogger<MarketController> _logger;
-        private readonly ApplicationDbContext _context;
+        private readonly IMarketService _marketService;
 
-        public MarketController(ILogger<MarketController> logger, ApplicationDbContext context)
+        public MarketController(ILogger<MarketController> logger, IMarketService marketService)
         {
             _logger = logger;
-            _context = context;
+            _marketService = marketService;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            _logger.LogInformation("Fetching market data...");
-            var instruments = _context.DbAssest.ToList();
+            _logger.LogInformation("Fetching market data from Redis cache or database...");
+            var instruments = await _marketService.GetAllInstrumentsAsync();
             return View(instruments);
         }
 
-        public IActionResult Details(string id)
+        public async Task<IActionResult> Details(string id)
         {
-            _logger.LogInformation($"Fetching details for instrument: {id}");
+            _logger.LogInformation("Fetching details for instrument: {Ticker}", id);
             
-            var instrument = new Assest
+            if (string.IsNullOrEmpty(id))
             {
-                Ticker = id,
-                Nombre = "Instrument Name",
-                Sector = "Sector",
-                Moneda = "USD",
-                PrecioActual = 100.00m,
-                CapitalizacionUSD = 1000000000m
-            };
+                return NotFound();
+            }
+
+            var instrument = await _marketService.GetInstrumentByTickerAsync(id);
+            
+            if (instrument == null)
+            {
+                // Si no se encuentra en la base de datos, crear uno ficticio para demostración
+                instrument = new Assest
+                {
+                    Ticker = id,
+                    Nombre = "Instrument Name",
+                    Sector = "Sector",
+                    Moneda = "USD",
+                    PrecioActual = 100.00m,
+                    CapitalizacionUSD = 1000000000m
+                };
+            }
+            
             return View(instrument);
         }
 

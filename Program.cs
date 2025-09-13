@@ -48,8 +48,12 @@ catch (Exception ex)
     Console.WriteLine($"Redis no disponible, usando cache en memoria: {ex.Message}");
 }
 
+// Registrar configuración de Redis
+builder.Services.Configure<RedisConfiguration>(builder.Configuration.GetSection("Redis"));
+
 // Registrar servicios
 builder.Services.AddScoped<IWatchlistService, WatchlistService>();
+builder.Services.AddScoped<IMarketService, MarketService>();
 
 builder.Services.AddSession(options =>
 {
