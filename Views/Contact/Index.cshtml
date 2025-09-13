@@ -1,10 +1,14 @@
 @model apptrade.Models.Contact
+@using Microsoft.AspNetCore.Http
 
 @{
     ViewBag.Title = "Contacto";
+
+    var datoEscondido = Context.Session.GetString("DatoEscondido");
 }
 
 <h1>Contacto</h1>
+<h2>@datoEscondido</h2>
 
 <form method="post" asp-action="OnPostRegistrar">
     <div class="form-group">

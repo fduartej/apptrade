@@ -115,6 +115,9 @@ namespace apptrade.Areas.Identity.Pages.Account
                 if (result.Succeeded)
                 {
                     _logger.LogInformation("User logged in.");
+
+                    HttpContext.Session.SetString("DatoEscondido", "Dato escondido en sesion");
+
                     return LocalRedirect(returnUrl);
                 }
                 if (result.RequiresTwoFactor)

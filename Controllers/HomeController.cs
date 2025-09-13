@@ -13,8 +13,25 @@ public class HomeController : Controller
         _logger = logger;
     }
 
+    [TempData]
+    public string Message { get; set; }
+
+
     public IActionResult Index()
     {
+
+        var cookieOptions = new CookieOptions
+        {
+            Expires = DateTimeOffset.UtcNow.AddDays(7),
+            HttpOnly = true, // Para evitar acceso desde JavaScript
+            Secure = true,   // Solo se envía por HTTPS
+            SameSite = SameSiteMode.Strict
+        };
+
+        Message = $"Customer 1000 added";
+
+        Response.Cookies.Append("MiCookie", "ValorDeLaCookie", cookieOptions);
+
         return View();
     }
 
