@@ -1,6 +1,106 @@
 @model apptrade.Models.Wallet
 
+@{
+    var transactions = ViewBag.Transactions as List<apptrade.Models.WalletTransaction>;
+}
 <h1>Wallet</h1>
 
 <p>Balance: @Model.Balance</p>
 <p>Customer: @Model.customer?.UserName</p>
+
+<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addFundsModal">
+    Agregar Fondos
+</button> 
+
+<h3 class="mb-3">
+    <i class="fas fa-history me-2"></i>Historial de transacciones
+</h3>
+
+<div class="table-responsive">
+    <table class="table table-striped table-hover table-bordered">
+        <thead class="table-dark">
+            <tr>
+                <th scope="col">
+                    <i class="fas fa-calendar me-1"></i>Fecha
+                </th>
+                <th scope="col">
+                    <i class="fas fa-tag me-1"></i>Tipo
+                </th>
+                <th scope="col">
+                    <i class="fas fa-dollar-sign me-1"></i>Monto
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+        @if (transactions != null && transactions.Any())
+        {
+            foreach (var t in transactions)
+            {
+                <tr>
+                    <td class="text-muted">
+                        @t.TransactionDate.ToString("dd/MM/yyyy HH:mm")
+                    </td>
+                    <td>
+                        @if (t.TransactionType?.ToLower() == "credit")
+                        {
+                            <span class="badge bg-success">
+                                <i class="fas fa-plus me-1"></i>Crédito
+                            </span>
+                        }
+                        else if (t.TransactionType?.ToLower() == "trans")
+                        {
+                            <span class="badge bg-info">
+                                <i class="fas fa-exchange-alt me-1"></i>Transferencia
+                            </span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-secondary">@t.TransactionType</span>
+                        }
+                    </td>
+                    <td class="text-end fw-bold text-success">
+                        @t.Amount.ToString("C")
+                    </td>
+                </tr>
+            }
+        }
+        else
+        {
+            <tr>
+                <td colspan="3" class="text-center text-muted py-4">
+                    <i class="fas fa-inbox fa-2x mb-2 d-block"></i>
+                    Sin transacciones registradas
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+</div>
+
+<div class="modal fade" id="addFundsModal" tabindex="-1" aria-labelledby="addFundsModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="addFundsModalLabel">Agregar Fondos</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form asp-action="AddFunds" method="post">
+                    <div class="mb-3">
+                        <label for="amount" class="form-label">Cantidad a Agregar</label>
+                        <input type="number" class="form-control" id="amount" name="amount" min="1" step="0.01" required />
+                    </div>
+                    <div class="mb-3">
+                        <label for="transactionType" class="form-label">Tipo de Transacción</label>
+                        <select class="form-select" id="transactionType" name="transactionType" required>
+                            <option value="">Seleccione...</option>
+                            <option value="credit">Credito</option>
+                            <option value="trans">Transferencia</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Agregar Fondos</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

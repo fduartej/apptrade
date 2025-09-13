@@ -21,5 +21,7 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Watchlist> DbWatchlist { get; set; }
 
     public DbSet<Wallet> DbWallet { get; set; }
+
+    public DbSet<WalletTransaction> DbWalletTransaction { get; set; }
 }
 
