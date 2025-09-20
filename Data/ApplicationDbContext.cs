@@ -23,5 +23,9 @@ public class ApplicationDbContext : IdentityDbContext
     public DbSet<Wallet> DbWallet { get; set; }
 
     public DbSet<WalletTransaction> DbWalletTransaction { get; set; }
+
+    public DbSet<Portfolio> DbPortfolio { get; set; }
+
+    public DbSet<PortfolioMovement> DbPortfolioMovement { get; set; }
 }
 
